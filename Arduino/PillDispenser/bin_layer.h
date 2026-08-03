@@ -40,6 +40,15 @@ void resetDailyBinCounts();    // zero binDispensedToday[] at the daily reset
 enum DropResult { DROP_OK, DROP_JAM, DROP_DOUBLE, DROP_UNVERIFIED };
 DropResult waitForDrop(int bin);
 
+// ── Dose-fired ledger (never re-fire / double-fire a scheduled dose on reboot)
+// The stock scheduler fires each bin once per day at trayHours[bin]:trayMin[bin], so
+// one "fired on day-of-year N" marker per bin is sufficient. Persisted to NVS, it
+// survives a power cut and auto-clears when the day-of-year changes.
+extern int doseFiredYday[11];       // last tm_yday a bin's scheduled dose fired; -1 = never
+void loadDoseLedger();              // read markers for all bins at boot
+bool doseFiredToday(int bin, int yday);
+void markDoseFiredToday(int bin, int yday);
+
 // ── Sensor-verified singulation
 enum SingulateResult { SING_OK, SING_JAM, SING_DOUBLE, SING_EMPTY, SING_CAP };
 void            singulateStroke(int bin);            // one raw servo stroke, blocking

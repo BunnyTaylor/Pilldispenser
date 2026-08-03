@@ -37,13 +37,19 @@ module sensor_slot() {
 }
 
 module wiper_lip() {
-  // Fixed scraper: a lip that hangs above the disc face at height `wiper_gap`,
-  // knocking back any pill NOT seated flush in a pocket (anti double-stack).
-  a = wiper_angle;
-  translate([0,0,floor_thick + wiper_gap])
-    rotate([0,0,a])
-      translate([pocket_ring_r, 0, 0])
-        cube([round_pocket_d*1.6, 2.0, disc_thickness], center = true);
+  // Fixed scraper, as a CANTILEVER ARM connected to the outer wall (so it prints as
+  // one piece — a free-floating lip is unprintable). The arm spans radially from the
+  // rim inward over the pocket path; its underside sits just above a SEATED pill
+  // (which is flush with the disc top, since pocket depth ≈ pill thickness), so a
+  // pill riding proud of its pocket is knocked back (anti double-stack).
+  z_bottom = floor_thick + disc_thickness + 0.3;  // clears a seated pill, catches a proud one
+  arm_h    = 3.0;
+  inner_r  = pocket_ring_r - round_pocket_d*0.3;   // scraper tip reaches over the pocket
+  outer_r  = housing_od/2;                          // embed into the outer wall
+  arm_len  = outer_r - inner_r + wall;
+  rotate([0, 0, wiper_angle])
+    translate([(inner_r + outer_r)/2, 0, z_bottom + arm_h/2])
+      cube([arm_len, 3.0, arm_h], center = true);
 }
 
 module housing_body() {

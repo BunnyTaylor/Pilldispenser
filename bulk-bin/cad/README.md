@@ -4,10 +4,19 @@ Parametric source for the mechanical parts that replace Shaztech's carousel tray
 **All pill-specific tuning lives in [`params.scad`](params.scad)** — edit the four
 `PILL` numbers (measured with calipers) and every part regenerates (brief §4).
 
-> **Not yet rendered.** OpenSCAD wasn't available in the authoring environment, so
-> these `.scad` files have **not been rendered to STL or visually checked** here.
-> Open each in OpenSCAD (F5 preview, F6 render, then Export → STL) and eyeball the
-> geometry before printing. Treat them as a tuned starting point, not finished STLs.
+> **Rendered & validated** with OpenSCAD 2021.01 (`./render.sh` → [`stl/`](stl/)).
+> All four parts render as **manifold** solids (`Simple: yes`). Regenerate after
+> editing `params.scad`. Two known notes from the render:
+> - `disc_housing` — the wiper is a **connected cantilever arm** (an earlier
+>   free-floating lip was fixed); prints as one piece.
+> - `manifold_chute` — renders as **separate inlet funnels + outlet** (not yet one
+>   connected body). That's the documented Phase-D step: hull adjacent inlet mouths
+>   once the real `bin_pitch` is fixed by the printed frame. Fine for preview; not a
+>   final single print yet.
+>
+> The rendered STLs use the **default** params (a 9×4 mm round tablet). **Re-measure
+> your pill, edit `params.scad`, and re-run `./render.sh` before printing** — the
+> defaults are a starting point, not your pill.
 
 ## Parts
 
